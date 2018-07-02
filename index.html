@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Hang Man Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+</head>
+
+<body>
+    <H1> Hang Man Game </H1>
+    <br>
+    <h2>
+        <span id="displayword">****</span>
+    </h2>
+    <br>
+
+    <p> wins:
+        <span id="wins">0</span>
+    </p>
+    <p> losses:
+        <span id="losses">0</span>
+    </p>
+    <p> tries:
+        <span id="tries">15</span>
+    </p>
+    <p> wrongguesses:
+        <span id="wrongguess"></span>
+    </p>
+
+
+
+    <script>
+
+        var listofwords = [
+            {
+                "word": "rabbit",
+                "pic": "rabbit.jpg",
+                "song": "rabbit.mpg"
+            },
+            {
+                "word": "hare",
+                "pic": "hare.jpg",
+                "song": "hare.mpg"
+            },
+            {
+                "word": "bunny",
+                "pic": "bunny.jpg",
+                "song": "bunny.mpg"
+            },
+            {
+                "word": "easter",
+                "pic": "easter.jpg",
+                "song": "easter.mpg"
+            },
+        ]
+
+        var newgame = new Hangman();
+        newgame.init("Mickey Mouse", 10, "*");
+
+        var wincount = 0;
+        var losecount = 0;
+        updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword);
+
+
+        // play game!    if win or lose, reinitalize with new word!   
+        document.onkeyup = function (event) {
+            var keypress = event.key;
+            endgame = newgame.guess(keypress);
+            if (endgame) {
+                if (newgame.win) {
+                    wincount++;
+                } else {
+                    losecount++;
+                }
+                newgame.init("rabbit", 10, "*");
+            }
+
+            updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword);
+        }
+
+        function updatePage(wincount, tries, wrongguess, displayword) {
+            document.querySelector("#wrongguess").innerHTML = wrongguess;
+            document.querySelector("#wins").innerHTML = wincount;
+            document.querySelector("#losses").innerHTML = losecount;
+            document.querySelector("#tries").innerHTML = tries;
+            document.querySelector("#displayword").innerHTML = displayword;
+        }
+
+        function Hangman() {
+            this.word;  /// original word with original case
+
+            this.testword;
+            this.displayword;  // word with placeholder that is displayed on screen
+            this.win = false;
+            this.tries;
+            this.wrongLettersGuessed = [];
+            this.placeholder;
+
+
+            this.init = function (word, maxguess, placeholder) {
+                this.word = word;  /// original word with original case
+
+                this.testword = word.toLowerCase();
+                this.displayword = this.testword;  // word with placeholder that is displayed on screen
+                this.win = false;
+                this.tries = maxguess;
+                this.wrongLettersGuessed = [];
+                this.placeholder = placeholder;
+                var a2zPattern = new RegExp("[a-z]", "g"); // look for all a-z
+                this.displayword = this.displayword.replace(a2zPattern, this.placeholder); // change all to placeholer
+                return this.displayword;
+            }
+
+            this.guess = function (letterguess) {
+                // make sure it's an alphabet key that was pressed to process guess. case insensitive search of a-z
+                letterguess = letterguess.toLowerCase();
+                if (letterguess.match(/[a-z]/i)) {
+                    console.log("Valid Letter")
+                    // let's see if the letter is already in the displayword
+                    if (this.displayword.indexOf(letterguess) > -1) {
+                        console.log(letterguess, " is already in ", this.displayword, "win: ", this.win, " tries: ", this.tries, " guesses: ", this.wrongLettersGuessed);
+                        return false;
+
+                    } else if (this.wrongLettersGuessed.indexOf(letterguess) > -1) {
+                        console.log(letterguess, " doesnt work! ", this.displayword, "win: ", this.win, " tries: ", this.tries, " guesses: ", this.wrongLettersGuessed);
+                        return false;
+
+                        //  let's see if the letter is in the word
+                    } else if (this.testword.indexOf(letterguess) > -1) {
+                        console.log(letterguess, " is in ", this.word, "!");
+
+                        // create an array to represent displayword since strings are immutable.   will rejoin into string later
+                        var newdisplaywordArray = [];
+
+                        // update the displayword with the the letter replacing the placehoder
+                        // eg.  * * * * * becomes * e * * *
+                        for (i = 0; i < this.testword.length; i++) {
+                            // checking each charcter for matching
+                            if (this.testword[i] === letterguess) {
+                                newdisplaywordArray[i] = this.word[i];  // to preserve original case
+                            } else {
+                                newdisplaywordArray[i] = this.displayword[i];
+                            }
+                            // console.log(i, " testing: ", newdisplaywordArray);
+                        }
+
+                        // recombine to share displayword
+                        this.displayword = newdisplaywordArray.join("");
+
+                        // check if we have won
+                        console.log(letterguess, " looks good! ", this.displayword, "win: ", this.win, " tries: ", this.tries, " guesses: ", this.wrongLettersGuessed);
+                        if (this.displayword.indexOf(this.placeholder) > -1) {
+                            return false;
+                        } else {
+                            this.win = true;
+                            return true;
+                        }
+
+
+                    } else {
+                        this.tries--;
+                        // append to list of wrong letters
+                        this.wrongLettersGuessed.push(letterguess);
+                        console.log(letterguess, " isn't one! ", this.displayword, "win: ", this.win, " tries: ", this.tries, " guesses: ", this.wrongLettersGuessed);
+                        if (this.tries === 0) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+
+                } else {
+                    console.log("Not Valid Letter");
+                }
+            }
+        }
+
+
+    </script>
+
+</body>
+
+</html>
