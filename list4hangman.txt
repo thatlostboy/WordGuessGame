@@ -1,0 +1,87 @@
+cartoons, movies, toys, games
+
+
+cartoon or characters from cartoons
+peppa pig
+dora
+spongebob
+curious george
+charlotte's webb
+wilbur's great adventure
+
+movie: 
+GI Joe
+trolls
+incredibles
+elsa
+coco
+lego movie
+coco
+moana
+boss baby
+dark knight
+frozen
+
+toys and games:
+legos
+num noms
+nintendo
+xbox
+barbies
+hatchimals
+melissa and doug
+bears
+little tykes
+hello kitty
+ping pong
+monopoly
+cycling
+jenga
+hotwheels
+cart
+
+
+foods wendy likes:
+
+food you like:
+steak
+escargot
+foie gras
+shrimp
+scallop
+lobster
+abalone
+creme brulee
+macarons
+sushi
+salmon
+tuna
+bluefin tuna
+salad
+egg salad
+arugula
+romaine lettuce
+beets
+sweet potatoe
+gelato
+sorbet
+asparagus
+noodle
+ramen
+shrimp scampi
+kabob
+poke bowl
+latte
+orange juice
+watermelon
+strawberry
+dragonfruit
+logan
+orange
+tangerine
+jujube
+wax apple
+pineapple
+grapes
+blueberry
+blackberry
