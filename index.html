@@ -13,25 +13,30 @@
 <body>
     <H1> Hang Man Game </H1>
     <hr>
-    <h2>
-        <span id="displayword">****</span>
-    </h2>
-    <hr>
-
-    <img id="resultPic" src="" alt="">
-
-    <hr>
-
     <p> wins:
         <span id="wins">0</span>
     </p>
     <p> losses:
         <span id="losses">0</span>
     </p>
-    <p> tries:
+    <hr>
+    <p>Last Mystery word:
+        <span id="revealed"></span>
+    </p>
+    <hr>
+    <br>
+    <h2>
+        <span id="displayword">****</span>
+    </h2>
+    <br>
+    <img id="resultPic" src="#" alt="">
+    <hr>
+
+
+    <p> Tries Remaining:
         <span id="tries">15</span>
     </p>
-    <p> wrongguesses:
+    <p> Already Tried:
         <span id="wrongguess"></span>
     </p>
 
@@ -59,39 +64,53 @@
 
         var wincount = 0;
         var losecount = 0;
+        var ignorekeys = false;
         updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword);
 
 
         // play game!    if win or lose, reinitalize with new word!   
         document.onkeyup = function (event) {
-            var keypress = event.key;
-            endgame = newgame.guess(keypress);
-            if (endgame) {
-                updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword); 
-                if (newgame.win) {
-                    wincount++;
-                    // play applause
-                    var x = document.querySelector("#audioapplause");
-                    x.play();
+            if (!ignorekeys) {  // while not ignore keys, do this.  
+                var keypress = event.key;
+                endgame = newgame.guess(keypress);
 
-                    // change to winning pic
-                    var y = document.querySelector("#resultPic");
-                    y.src = "images/winner10.gif"
 
-                    // display alert
-                    var winningMsg = 'You won!  You figured out the word "'+newgame.word;
-                    alert(winningMsg);
+                if (endgame) {
+                    if (newgame.win) {
+                        wincount++;
+                        updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword);
+                        // play applause
+                        var x = document.querySelector("#audioapplause");
+                        x.play();
+
+                        // change to winning pic
+                        var y = document.querySelector("#resultPic");
+                        console.log("beforeload", y.src);
+
+                        y.src = "./images/" + randompic("win", 8)
+                        console.log("afterload", y.src);
+                        y.alt = "WINNER!!!";
+
+                        // display alert
+                        //var winningMsg = 'You won!  You figured out the word "' + newgame.word;
+                        // alert(winningMsg);
+                    } else {
+                        losecount++;
+                        updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword);
+                        //var losingMsg = 'You ARE A LOSER!  You couldn\'t even figure out "' + newgame.word + '"';
+                        // alert(losingMsg);
+                    }
+                    // alert("before re-init")
+                    document.querySelector("#revealed").innerHTML = newgame.word;
+                    ignorekeys = true;
+                    wait();  // waits for 3 seconds before allow any new input
+                    newgame.init("rabbit", 10, "*");
+                    updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword);
                 } else {
-                    losecount++;
-                    var losingMsg = 'You ARE A LOSER!  You couldn\'t even figure out "'+newgame.word+'"';
-                    alert(losingMsg);
+                    updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword);
                 }
-                newgame.init("rabbit", 10, "*");
-            } else {
-                updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword); 
             }
 
-            updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword);
         }
 
         // function called to update the page
@@ -101,9 +120,28 @@
             document.querySelector("#losses").innerHTML = losecount;
             document.querySelector("#tries").innerHTML = tries;
             document.querySelector("#displayword").innerHTML = displayword;
-                                // change to winning pic
-                                var y = document.querySelector("#resultPic");
-                    y.src = "";
+  
+        }
+
+        function wait() {
+            setTimeout(function () {
+                ignorekeys = false;
+                console.log("waited for 5 seconds");
+                var y = document.querySelector("#resultPic");
+            y.src = "#";
+            y.alt = "";
+            }, 6000);
+        }
+
+        //return path of random picture picture winner1 to winnerx
+        function randompic(winOrLose, range) {
+            // choose among file winner1.gif to winnerX.gif where X is the range
+            picnum = Math.floor(Math.random() * range) + 1
+            if (winOrLose = "win") {
+                picFilename = "winner" + picnum + ".gif"
+            }
+            console.log(picFilename);
+            return picFilename;
         }
 
         // actual hangup man object.  
@@ -151,13 +189,13 @@
                     if (this.displayword.indexOf(letterguess) > -1) {
                         console.log(letterguess, " is already in ", this.displayword, "win: ", this.win, " tries: ", this.tries, " guesses: ", this.wrongLettersGuessed);
                         return false;
-                    
-                    // if not in the displayword, let's see if the guess was already made, 
+
+                        // if not in the displayword, let's see if the guess was already made, 
                     } else if (this.wrongLettersGuessed.indexOf(letterguess) > -1) {
                         console.log(letterguess, " doesnt work! ", this.displayword, "win: ", this.win, " tries: ", this.tries, " guesses: ", this.wrongLettersGuessed);
                         return false;
 
-                    // if not in display word and guess not already made, let's see if it's part of the atual word.   
+                        // if not in display word and guess not already made, let's see if it's part of the atual word.   
                     } else if (this.testword.indexOf(letterguess) > -1) {
                         console.log(letterguess, " is in ", this.word, "!");
 
