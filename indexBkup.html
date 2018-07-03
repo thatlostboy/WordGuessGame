@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Hang Man Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
+    
+</head>
+
+<body>
+    <H1> Hang Man Game </H1>
+    <hr>
+    <p> wins:
+        <span id="wins">0</span>
+    </p>
+    <p> losses:
+        <span id="losses">0</span>
+    </p>
+    <hr>
+    <p>Last Mystery word:
+        <span id="revealed"></span>
+    </p>
+    <hr>
+    <br>
+    <h2>
+        <span id="displayword">****</span>
+    </h2>
+    <br>
+    <img id="resultPic" src="#" alt="">
+    <hr>
+
+
+    <p> Tries Remaining:
+        <span id="tries">15</span>
+    </p>
+    <p> Already Tried:
+        <span id="wrongguess"></span>
+    </p>
+
+    <audio id="audioapplause" src="images/applause.wav">
+        <source src="images/applause.wav" type="audio/wav">
+    </audio>
+    <audio id="audiodisappointed" src="images/awwdisappointed.wav">
+        <source src="images/awwdisappointed.wav" type="audio/wav">
+    </audio>
+
+    <script>
+        // found a site to convert csv to json so it can be searched easily
+        // https://www.csvjson.com/csv2json
+        var wordlist1= [
+            {
+                "word": "rabbit",
+                "hint": "rabbit.jpg",
+            },
+            {
+                "word": "hare",
+                "hint": "hare.jpg",
+            },
+        ]
+
+
+        var newgame = new Hangman();
+        newgame.init("Mickey Mouse", 10, "*");
+
+        var wincount = 0;
+        var losecount = 0;
+        var ignorekeys = false;
+        updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword);
+
+
+        // play game!    if win or lose, reinitalize with new word!   
+        document.onkeyup = function (event) {
+            if (!ignorekeys) {  // while not ignore keys, do this.  
+                var keypress = event.key;
+                endgame = newgame.guess(keypress);
+
+
+                if (endgame) {
+                    if (newgame.win) {
+                        wincount++;
+                        updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword);
+                        // play applause
+                        var x = document.querySelector("#audioapplause");
+                        x.play();
+
+                        // change to winning pic
+                        var y = document.querySelector("#resultPic");
+                        console.log("beforeload", y.src);
+
+                        y.src = "./images/" + randompic("win", 8)
+                        console.log("afterload", y.src);
+                        y.alt = "WINNER!!!";
+
+                    } else {
+                        losecount++;
+                        updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword);
+                        //var losingMsg = 'You ARE A LOSER!  You couldn\'t even figure out "' + newgame.word + '"';
+                        var x = document.querySelector("#audiodisappointed");
+                        x.play();
+
+                    }
+                    // alert("before re-init")
+                    document.querySelector("#revealed").innerHTML = newgame.word;
+                    ignorekeys = true;
+                    wait();  // waits for 
+                    newgame.init("rabbit", 10, "*");
+                    updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword);
+                } else {
+                    updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword);
+                }
+            }
+
+        }
+
+        // function called to update the page
+        function updatePage(wincount, tries, wrongguess, displayword) {
+            document.querySelector("#wrongguess").innerHTML = wrongguess;
+            document.querySelector("#wins").innerHTML = wincount;
+            document.querySelector("#losses").innerHTML = losecount;
+            document.querySelector("#tries").innerHTML = tries;
+            document.querySelector("#displayword").innerHTML = displayword;
+  
+        }
+
+        function wait() {
+            setTimeout(function () {
+                ignorekeys = false;
+                console.log("waited for 5 seconds");
+                var y = document.querySelector("#resultPic");
+            y.src = "#";
+            y.alt = "";
+            }, 6000);
+        }
+
+        //return path of random picture picture winner1 to winnerx
+        function randompic(winOrLose, range) {
+            // choose among file winner1.gif to winnerX.gif where X is the range
+            picnum = Math.floor(Math.random() * range) + 1
+            if (winOrLose = "win") {
+                picFilename = "winner" + picnum + ".gif"
+            }
+            console.log(picFilename);
+            return picFilename;
+        }
+
+    
+         
+        function Hangman() {
+            // example usage:
+            //  newgame = new Hangman();
+            //  newgame.init("rabbit", 10, "*");
+            //  two methods: init and guess
+            //  properties should be monitorted for status
+            this.word;  /// original word with original case
+
+            this.testword;
+            this.displayword;  // word with placeholder that is displayed on screen such as for rabbit.  it will dispaly r_bb_t 
+            this.win = false;
+            this.tries;
+            this.wrongLettersGuessed = [];  // array to hold values of all letters guessed that is incorrect
+            this.placeholder;
+
+            // this will initialize all values to start a new game..  
+            this.init = function (word, maxguess, placeholder) {
+
+                this.word = word;  /// original word with original case
+
+                this.testword = word.toLowerCase();
+                this.displayword = this.testword;  // word with placeholder that is displayed on screen
+                this.win = false;
+                this.tries = maxguess;
+                this.wrongLettersGuessed = [];
+                this.placeholder = placeholder;  // this is the character displayd insead of the word
+                var a2zPattern = new RegExp("[a-z]", "g"); // look for all a-z
+                this.displayword = this.displayword.replace(a2zPattern, this.placeholder); // change all alphabet's to placeholer
+                return this.displayword;
+            }
+
+            this.guess = function (letterguess) {
+                // returns true if game is over.  Game is over when all the letters are revealed or when out of tries
+                // returns false if game is not over.   Still have tries left and/or word is still not revealed  
+
+
+                // make sure it's an alphabet key that was pressed to process guess. case insensitive search of a-z
+                letterguess = letterguess.toLowerCase();
+                if (letterguess.match(/[a-z]/i)) {  //case insensitive search for letter
+                    console.log("Valid Letter from a-z")
+                    // let's see if the letter is already in the displayword, if so, ignore guess and return false (game is not over)
+                    if (this.displayword.indexOf(letterguess) > -1) {
+                        console.log(letterguess, " is already in ", this.displayword, "win: ", this.win, " tries: ", this.tries, " guesses: ", this.wrongLettersGuessed);
+                        return false;
+
+                        // if not in the displayword, let's see if the guess was already made, 
+                    } else if (this.wrongLettersGuessed.indexOf(letterguess) > -1) {
+                        console.log(letterguess, " doesnt work! ", this.displayword, "win: ", this.win, " tries: ", this.tries, " guesses: ", this.wrongLettersGuessed);
+                        return false;
+
+                        // if not in display word and guess not already made, let's see if it's part of the atual word.   
+                    } else if (this.testword.indexOf(letterguess) > -1) {
+                        console.log(letterguess, " is in ", this.word, "!");
+
+                        // create an array to represent displayword since strings are immutable.   will rejoin into string later
+                        var newdisplaywordArray = [];
+
+                        // update the displayword with the the letter replacing the placehoder
+                        // eg.  * * * * * becomes * e * * *
+                        for (i = 0; i < this.testword.length; i++) {
+                            // checking each charcter for matching
+                            if (this.testword[i] === letterguess) {
+                                newdisplaywordArray[i] = this.word[i];  // to preserve original case
+                            } else {
+                                newdisplaywordArray[i] = this.displayword[i];
+                            }
+                            // console.log(i, " testing: ", newdisplaywordArray);
+                        }
+
+                        // recombine to share displayword
+                        this.displayword = newdisplaywordArray.join("");
+
+                        // check if we have won, if so, mark the win flag
+                        console.log(letterguess, " looks good! ", this.displayword, "win: ", this.win, " tries: ", this.tries, " guesses: ", this.wrongLettersGuessed);
+                        // this confirms that there are no "placeholders" in the word, if there is no placeholder, then the game is over 
+                        if (this.displayword.indexOf(this.placeholder) > -1) {
+                            return false;
+                        } else {
+                            this.win = true;
+                            return true;
+                        }
+
+
+                    } else { // looks like the guess is not in the actual word, so we're going to lose a tries attempt
+                        // decrement tries counter
+                        this.tries--;
+                        // append to list of wrong letters
+                        this.wrongLettersGuessed.push(letterguess);
+                        console.log(letterguess, " isn't one! ", this.displayword, "win: ", this.win, " tries: ", this.tries, " guesses: ", this.wrongLettersGuessed);
+
+                        //if out of tries, then game should be over
+                        if (this.tries === 0) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+
+                } else {
+                    console.log("Not a letter");
+                }
+            }
+        }
+
+
+    </script>
+    <script src="assets/javascript/game.js"></script>
+</body>
+
+</html>
