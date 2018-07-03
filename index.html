@@ -43,6 +43,9 @@
     <audio id="audioapplause" src="images/applause.wav">
         <source src="images/applause.wav" type="audio/wav">
     </audio>
+    <audio id="audiodisappointed" src="images/awwdisappointed.wav">
+        <source src="images/awwdisappointed.wav" type="audio/wav">
+    </audio>
 
     <script>
 
@@ -91,19 +94,18 @@
                         console.log("afterload", y.src);
                         y.alt = "WINNER!!!";
 
-                        // display alert
-                        //var winningMsg = 'You won!  You figured out the word "' + newgame.word;
-                        // alert(winningMsg);
                     } else {
                         losecount++;
                         updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword);
                         //var losingMsg = 'You ARE A LOSER!  You couldn\'t even figure out "' + newgame.word + '"';
-                        // alert(losingMsg);
+                        var x = document.querySelector("#audiodisappointed");
+                        x.play();
+
                     }
                     // alert("before re-init")
                     document.querySelector("#revealed").innerHTML = newgame.word;
                     ignorekeys = true;
-                    wait();  // waits for 3 seconds before allow any new input
+                    wait();  // waits for 
                     newgame.init("rabbit", 10, "*");
                     updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword);
                 } else {
