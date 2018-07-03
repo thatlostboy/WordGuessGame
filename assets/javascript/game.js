@@ -379,7 +379,7 @@ var newgame = new Hangman();
 var maxTries = 15;
 var wincount = 0;
 var losecount = 0;
-var placeholder = "*";
+var placeholder = "_";
 var ignorekeys = false;  // used to suppress input to display congrats when they win
 newword = randomword(wordlist);
 newgame.init(newword['word'], maxTries, placeholder);
@@ -437,7 +437,12 @@ function updatePage(wincount, tries, wrongguess, displayword, category) {
     document.querySelector("#wins").innerHTML = wincount;
     document.querySelector("#losses").innerHTML = losecount;
     document.querySelector("#tries").innerHTML = tries;
-    document.querySelector("#displayword").innerHTML = displayword;
+    displayarray = displayword.split("");
+    newdisplayword = "";
+    for (i=0; i<displayarray.length; i++) {
+        newdisplayword = newdisplayword + displayarray[i]+ " ";
+    }
+    document.querySelector("#displayword").innerHTML = newdisplayword;
     document.querySelector("#category").innerHTML = category;
 }
 
