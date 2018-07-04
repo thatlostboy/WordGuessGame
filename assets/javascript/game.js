@@ -418,7 +418,7 @@ document.onkeyup = function (event) {
 
                 //change to sad pic
                 var y = document.querySelector("#resultPic");
-                y.src = "assets/images/" + randompic("lose", 1)
+                y.src = "assets/images/" + randompic("lose", 4)
                 y.alt = "LOST!";
             }
                      
@@ -435,14 +435,10 @@ document.onkeyup = function (event) {
 function updatePage(wincount, tries, wrongguess, displayword, category) {
     document.querySelector("#wrongguess").innerHTML = wrongguess;
     document.querySelector("#wins").innerHTML = wincount;
-    document.querySelector("#losses").innerHTML = losecount;
+    // document.querySelector("#losses").innerHTML = losecount;
     document.querySelector("#tries").innerHTML = tries;
-    displayarray = displayword.split("");
-    newdisplayword = "";
-    for (i=0; i<displayarray.length; i++) {
-        newdisplayword = newdisplayword + displayarray[i]+ " ";
-    }
-    document.querySelector("#displayword").innerHTML = newdisplayword;
+
+    document.querySelector("#displayword").innerHTML = displayword;
     document.querySelector("#category").innerHTML = category;
 }
 

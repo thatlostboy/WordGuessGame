@@ -1,0 +1,126 @@
+body {
+    background-image: url("../images/childrenbackground.jpg");
+    background-size: 100% 100%;
+    color: rgb(66, 55, 6);
+    font-size: 22px;
+    font-weight: bolder;
+ }
+
+
+h1,h3 {
+    text-align: center;
+    text-shadow: 2px 2px yellow;
+    font-weight: bolder;
+}
+
+p {
+    color: darkgreen;
+}
+
+#displaywordbk {
+    background-image: url("../images/kidsboard.jpg");
+    background-size: 100% 100%;
+    box-shadow: 8px 8px 8px 8px rgba(0,0,0,0.7) white inset;
+    height: 500px;
+    min-width: 800px;
+    opacity: 0.8;
+    position: relative;
+    margin-bottom: 0px;
+}
+
+#displaywordblock {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 180px;
+    margin: auto;
+
+}
+
+#displayword {
+    letter-spacing: 20px;
+}
+
+#categoryblock {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 140px;
+    margin: auto;
+
+}
+
+#letterguessblock {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 100px;
+    margin: auto;
+
+}
+
+#pictureblock {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 60px;
+    height: 100%;
+    margin: auto;
+    z-index: +1;
+    
+
+}
+
+#answer {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: auto;
+    z-index: +1;
+    font-size: 30px;
+    color: brown;
+    text-shadow:  
+    -1px -1px 0 rgb(231, 197, 4),  
+     1px -1px 0 rgb(231, 197, 4), 
+     -1px 1px 0 rgb(231, 197, 4), 
+      1px 1px 0 rgb(231, 197, 4);
+}
+
+
+#winblock {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
+#triesblock {
+    position: absolute;
+    right: 10px;
+    top: 10px;    
+}
+
+#wins {
+    border: 2px;
+    border-style: solid;
+    line-height: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+}
+
+#tries {
+    color: red;
+    border-color: red;
+    border: 2px;
+    border-style: solid;
+    line-height: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+}
+
+#banner {
+    margin-bottom: 150px;
+}
+

@@ -14,47 +14,57 @@
 
 <body>
     <div class="container">
-        <H1>HANGMAN for Wendy, Konnor, and Farrah</H1>
-        <p>See "console" as needed</p>
-        <hr>
-        <p> WINS:
-            <span id="wins">0</span>
-        </p>
-        <p> LOSSES:
-            <span id="losses">0</span>
-        </p>
-        <hr>
-        <p>PREVIOUS MYSTERY WORD: 
-            <span id="revealed"></span>
-        </p>
-        <hr>
-        <br>
-        <h2>
-            <span id="displayword">****</span>
-        </h2>
-        <br>
-        <img id="resultPic" src="#" alt="">
+
+
         <hr>
 
-        <p> CATEGORY:
-                <span id="category"></span>
-        </p>
-        <p> HINT:
-                <span id="hint"></span>
-        </p>        
-        <p> NUMBER OF GUESSES REMAINING:
-            <span id="tries"></span>
-        </p>
-        <p> LETTERS ALREADY GUESSED:
-            <span id="wrongguess"></span>
-        </p>
+
+        <hr>
+        <div class="row">
+            <div class="col-md-12" id="displaywordbk">
+                <div id="displaywordblock">
+                    <h2>
+                        <pre id="displayword"></pre>
+                    </h2>
+                </div>
+                <div id="categoryblock">
+                    <div class="col-md-12" > CATEGORY:
+                        <span id="category"></span>
+                    </div>
+                </div>
+                <div id="pictureblock">
+                    <img class="img-responsive" id="resultPic" src="#" alt="">
+                </div>
+                <div id="winblock">
+                    WINS:
+                    <span id="wins">0</span>
+                </div>
+                <div id="triesblock"> TRIES LEFT:
+                    <span id="tries"></span>
+                </div>
+                <div id="letterguessblock"> ALREADY GUESSED:
+                    <span id="wrongguess"></span>
+                </div>
+                <div id="answer" >
+                        <span id="endmessage">Previous Word: <Placeholder/span></span><span id="revealed"></span>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12" id="banner">
+                <h1>WORD GUESS for Van's family</h1>
+                <h3>Wendy, Konnor, and Farrah</h3>
+            </div>
+        </div>
     </div>
 
 
-    <audio id="audioapplause" src="assets/audio/applause.wav">
+    <audio id="audioapplause">
         <source src="assets/audio/applause.wav" type="audio/wav">
     </audio>
-    <audio id="audiodisappointed" src="assets/audio/awwdisappointed.wav">
+    <audio id="audiodisappointed">
         <source src="assets/audio/awwdisappointed.wav" type="audio/wav">
     </audio>
 
