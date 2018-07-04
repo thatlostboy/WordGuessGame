@@ -505,7 +505,7 @@ function Hangman() {
     this.win = false;
     this.tries;
     this.wrongLettersGuessed = [];  // array to hold values of all letters guessed that is incorrect
-    this.placeholder;
+    this.placeholder; // make sure placeholder isn't the actual alphabit or the logic will break.  it should be "*" or "_"
 
     // this will initialize all values to start a new game..  
     this.init = function (word, maxguess, placeholder) {
@@ -564,13 +564,13 @@ function Hangman() {
                 // recombine to share displayword
                 this.displayword = newdisplaywordArray.join("");
 
-                // check if we have won, if so, mark the win flag
+                // check if wthat was the last letter and we have won, if so, mark the win flag
                 console.log(letterguess, " looks good! ", this.displayword, "win: ", this.win, " tries: ", this.tries, " guesses: ", this.wrongLettersGuessed);
                 // this confirms that there are no "placeholders" in the word, if there is no placeholder, then the game is over 
                 if (this.displayword.indexOf(this.placeholder) > -1) {
-                    return false;
+                    return false;    // there are still placeholders in the word eg.  _ _ _ d _ _ so game isn't over
                 } else {
-                    this.win = true;
+                    this.win = true;    // there is no placeholders in the word eg. t u n a, so game is won!   
                     return true;
                 }
 
