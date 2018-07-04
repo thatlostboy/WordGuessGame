@@ -63,7 +63,7 @@ p {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    top: 60px;
+    top: 20px;
     height: 100%;
     margin: auto;
     z-index: +1;
@@ -73,7 +73,7 @@ p {
 
 #answer {
     position: absolute;
-    top: 10px;
+    top: -50px;
     left: 50%;
     transform: translateX(-50%);
     margin: auto;
@@ -85,6 +85,14 @@ p {
      1px -1px 0 rgb(231, 197, 4), 
      -1px 1px 0 rgb(231, 197, 4), 
       1px 1px 0 rgb(231, 197, 4);
+}
+
+.hideobject {
+    display: none;
+}
+
+.showobject {
+    display: block;
 }
 
 

@@ -399,9 +399,15 @@ document.onkeyup = function (event) {
             if (newgame.win) {
                 wincount++;
                 updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword, newword['category']);
+                // play winning message
+                document.querySelector("#endmessage").textContent = "You did it!!!  The word was "
+                document.querySelector("#revealed").innerHTML = newgame.word;
+                document.querySelector("#answer").className="showobject";
+
                 // play applause
                 var x = document.querySelector("#audioapplause");
                 x.play();
+
 
                 // change to winning pic
                 var y = document.querySelector("#resultPic");
@@ -412,6 +418,11 @@ document.onkeyup = function (event) {
                 losecount++;
                 updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword, newword['category']);
 
+                // play winning message
+                document.querySelector("#endmessage").textContent = "Awww.  You missed the word.  The word was "
+                document.querySelector("#revealed").innerHTML = newgame.word;
+                document.querySelector("#answer").className="showobject";
+
                 // play sad song
                 var x = document.querySelector("#audiodisappointed");
                 x.play();
@@ -421,7 +432,7 @@ document.onkeyup = function (event) {
                 y.src = "assets/images/" + randompic("lose", 4)
                 y.alt = "LOST!";
             }
-                     
+
             wait6();  // waits for 6 seconds to remove pic, reveal words, pick new word, and finally allow keystrokes
 
         } else {
@@ -449,7 +460,8 @@ function wait6() {
         var y = document.querySelector("#resultPic");
         y.src = "#";
         y.alt = "";
-        document.querySelector("#revealed").innerHTML = newgame.word; 
+        document.querySelector("#answer").className="hideobject";
+
         newword = randomword(wordlist);
         newgame.init(newword['word'], maxTries, placeholder);
         updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword, newword['category']);
