@@ -530,7 +530,7 @@ function Hangman() {
 
         // make sure it's an alphabet key that was pressed to process guess. case insensitive search of a-z
         letterguess = letterguess.toLowerCase();
-        if (letterguess.match(/[a-z]/i)) {  //case insensitive search for letter
+        if (letterguess.match(/^[a-z]$/i)) {  //case insensitive search for letter
             console.log("Valid Letter from a-z")
             // let's see if the letter is already in the displayword, if so, ignore guess and return false (game is not over)
             if (this.displayword.indexOf(letterguess) > -1) {
