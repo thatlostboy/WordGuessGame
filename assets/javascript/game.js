@@ -459,7 +459,7 @@ function updatePage(wincount, tries, wrongguess, displayword, category) {
 function wait6() {
     setTimeout(function () {
         ignorekeys = false;
-        console.log("gonna suppress keystrokes for seconds");
+        console.log("ignored keystrokes for 6 seconds");
         var y = document.querySelector("#resultPic");
         y.src = "#";
         y.alt = "";
