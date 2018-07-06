@@ -376,7 +376,7 @@ var wordlist = [
 
 
 var newgame = new Hangman();
-var maxTries = 15;
+var maxTries = 15;  
 var wincount = 0;
 var losecount = 0;
 var placeholder = "_";
@@ -438,6 +438,8 @@ document.onkeyup = function (event) {
         } else {
             updatePage(wincount, newgame.tries, newgame.wrongLettersGuessed, newgame.displayword, newword['category']);
         }
+    } else {
+        console.log ("ignore keystroke of " + event.key)
     }
 
 }
@@ -453,6 +455,7 @@ function updatePage(wincount, tries, wrongguess, displayword, category) {
     document.querySelector("#category").innerHTML = category;
 }
 
+// this pause is to display the splash page congrutulating the winner or commiserating with the defeated
 function wait6() {
     setTimeout(function () {
         ignorekeys = false;
@@ -468,9 +471,8 @@ function wait6() {
     }, 6000);
 }
 
-//return path of random picture picture winner1 to winnerx
+//return path of random picture picture winner1 to winnerx, or lose1 to loserx.jpg
 function randompic(winOrLose, range) {
-    // choose among file winner1.gif to winnerX.gif where X is the range
     picnum = Math.floor(Math.random() * range) + 1
     if (winOrLose === "win") {
         picFilename = "winner" + picnum + ".gif";
@@ -491,7 +493,7 @@ function randomword(listObj) {
 }
 
 
-
+// this is the main object with the logic that plays the actual game
 function Hangman() {
     // example usage:
     //  newgame = new Hangman();

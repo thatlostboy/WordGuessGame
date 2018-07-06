@@ -1,3 +1,3 @@
 # WordGuessGame
 
-Word guess game similar to Hangman. 
+https://thatlostboy.github.io/WordGuessGame
